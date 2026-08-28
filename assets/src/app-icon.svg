@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Practice Loop Notebook loop mark</title>
+  <rect width="512" height="512" rx="96" fill="#10141f"/>
+  <path fill="#252f43" d="M76 108h360v296H76z"/>
+  <path fill="#ffd166" d="M112 144h72v40h-32v144h32v40h-72zM328 144h72v224h-72v-40h32V184h-32z"/>
+  <path fill="#64e8c4" d="M184 236h32v40h-32zm56-52h32v144h-32zm56 28h32v88h-32z"/>
+  <path fill="#f4f0dc" d="M196 344h120v24H196z"/>
+</svg>
