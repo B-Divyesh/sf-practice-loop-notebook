@@ -1,5 +1,5 @@
 const CACHE = 'loop-notebook-shell-v2';
-const ASSETS = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/assets/loop-desk.webp', '/icon-192.png', '/icon-512.png'];
+const ASSETS = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/assets/loop-desk.webp', '/assets/loop-desk-576.webp', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {

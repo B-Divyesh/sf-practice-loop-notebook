@@ -54,7 +54,7 @@ Prompt: “Editorial 16-bit pixel art, wide landscape. A quiet midnight rehearsa
 
 Negative list: photorealism, glossy 3D, neon cyberpunk gradient, real people, hands, brands, existing characters, legible writing, logos, watermarks, streaming-service imagery.
 
-Generated with the factory `factory-image` deployment on 2026-08-28. The selected output and prompt sidecar live in `assets/src/`; the optimized shipping WebP lives in `public/assets/`. Generated imagery is original to this product under the repository license. Icons and waveform decorations are authored in CSS/SVG and use no third-party asset set.
+Generated with the factory `factory-image` deployment on 2026-08-28. The selected output and prompt sidecars live in `assets/src/`; optimized 576 px and 1152 px shipping WebPs live in `public/assets/`. Generated imagery is original to this product under the repository license. Icons and waveform decorations are authored in CSS/SVG and use no third-party asset set.
 
 ## Why it fits
 

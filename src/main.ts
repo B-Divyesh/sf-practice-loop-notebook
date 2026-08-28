@@ -54,7 +54,7 @@ function shell(content: string, active = 'notebook'): string {
   const offline = navigator.onLine ? '' : '<span class="status-chip offline">Offline · saved locally</span>';
   return `
     <header class="site-header">
-      <a class="wordmark" href="/" data-link aria-label="Practice Loop Notebook home"><span aria-hidden="true" class="logo-mark">A↺B</span><span>Loop Notebook</span></a>
+      <a class="wordmark" href="/" data-link><span aria-hidden="true" class="logo-mark">A↺B</span><span>Loop Notebook</span></a>
       <nav aria-label="Primary">
         <a href="/" data-link ${active === 'notebook' ? 'aria-current="page"' : ''}>Notebook</a>
         <a href="/unlock" data-link ${active === 'unlock' ? 'aria-current="page"' : ''}>${unlocked ? 'Unlocked' : 'Get full archive'}</a>
@@ -95,7 +95,7 @@ function landing(): string {
         <div class="hero-facts" aria-label="Product features"><span>Offline</span><span>No account</span><span>Own your export</span></div>
       </div>
       <figure class="hero-art">
-        <img src="/assets/loop-desk.webp" width="1152" height="768" alt="Pixel-art rehearsal desk with a cassette player, looping cable, metronome, and practice notebook" fetchpriority="high" decoding="async">
+        <img src="/assets/loop-desk.webp" srcset="/assets/loop-desk-576.webp 576w, /assets/loop-desk.webp 1152w" sizes="(max-width: 900px) 92vw, 44vw" width="1152" height="768" alt="Pixel-art rehearsal desk with a cassette player, looping cable, metronome, and practice notebook" fetchpriority="high" decoding="async">
         <figcaption>A passage, a constraint, a trace of progress.</figcaption>
       </figure>
     </section>
@@ -216,7 +216,7 @@ function unlockPage(): string {
 
 function render(): void {
   revokeMediaUrl();
-  const path = location.pathname;
+  const path = location.pathname === '/' ? '/' : location.pathname.replace(/\/$/, '');
   const params = new URLSearchParams(location.search);
   selectedId = path === '/' ? params.get('passage') : null;
   if (path === '/privacy') app.innerHTML = legal('privacy');

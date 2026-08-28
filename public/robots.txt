@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://practice-loop-notebook.sociobot.in/sitemap.xml
