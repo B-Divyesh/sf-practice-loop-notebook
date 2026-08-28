@@ -1,3 +1,33 @@
+# Practice Loop Notebook — review handoff
+
+## Review result — FAIL
+
+Date: 2026-08-28
+Work order: `practice-loop-notebook-review-1`
+
+No product code was modified. The requested independent review is in [`.factory/review-1.md`](review-1.md).
+
+### What was verified
+
+- Fresh live Chromium visits at 390 px and desktop, including a visual mobile check and normal-load request/console logging.
+- `/demo` and `?demo=1`; both currently resolve to the ordinary empty landing page rather than a sandbox demo.
+- All available claim commands: none exist because `.factory/claims.json` is absent.
+- Local clean dependency checks: `npm test` (5 passed), `npm run build` (`dist/` produced), and `npm run test:e2e` (6 passed).
+- Direct routes, title/focus behavior, local links, metadata, live response headers, and the previous malformed-archive reproduction.
+
+### Known release blockers
+
+- No one-click sample demo or isolated demo storage.
+- No claims registry or tagged claim tests.
+- A malformed archive is accepted, saved, then raises `Cannot read properties of undefined (reading 'replace')` when opened.
+- Unknown URLs return the normal landing page with HTTP 200 instead of a designed 404.
+
+### Next steps
+
+Resolve every finding in `review-1.md`, especially the four blockers, then run a new independent full review from a clean clone and fresh browser contexts. The previous build handoff and verification record are retained below for history.
+
+---
+
 # Practice Loop Notebook — build handoff
 
 ## Independent verification result — **FAIL**
