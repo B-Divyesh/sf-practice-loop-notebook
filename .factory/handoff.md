@@ -1,5 +1,20 @@
 # Practice Loop Notebook — build handoff
 
+## Independent verification result — **FAIL**
+
+Verification date: 2026-08-28
+Verifier work order: `practice-loop-notebook-verify-1`
+Tested commit: `6f76b0ed330081bf870a25090a61441104bff9da`
+Tested deployment: <https://practice-loop-notebook.sociobot.in>
+
+The live site exactly matches the candidate output, and its normal practice flow, desktop/390 px accessibility, offline reload, PWA update notice, test suite, build, Lighthouse, and privacy request checks passed. It is nevertheless **not approved for promotion**.
+
+- **P1 release blocker:** Importing a syntactically product-branded v1 archive containing only `id`, `title`, `sessions`, and `updatedAt` is accepted and persisted. The archive row displays `undefined BPM`; opening it yields the uncaught error `Cannot read properties of undefined (reading 'replace')`. The importer must validate the full schema and bounds before writing, reject bad input with a recovery message, and gain a regression test.
+- **P2 deployment gap:** all live static assets use `Cache-Control: public, must-revalidate, max-age=30`, including fingerprinted JS/CSS. Configure long-lived immutable caching for fingerprinted assets.
+- **P3 deployment hardening:** live responses lack CSP and Permissions-Policy, and the manifest is `application/octet-stream`.
+
+Detailed commands, results, reproduction, PWA evidence, and live-file SHA-256 comparison are in [`.factory/verification.md`](verification.md). Rerun the full verification after the P1 fix; until then, the build handoff below is superseded by this FAIL result.
+
 Date: 2026-08-28
 
 Work order: `practice-loop-notebook-build-1`
