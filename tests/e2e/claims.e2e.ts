@@ -180,9 +180,10 @@ test('@claim:installable-shell exposes a complete manifest and service worker', 
   expect(registration.scope).toMatch(/\/$/);
 });
 
-test('@claim:license-contact sends a token only to the product verification endpoint', async ({ page }) => {
+test('@claim:license-contact sends a token only to the product verification endpoint', async ({ page }, testInfo) => {
   const crossOrigin: string[] = [];
-  page.on('request', (request) => { if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== 'http://127.0.0.1:4173') crossOrigin.push(request.url()); });
+  const firstPartyOrigin = new URL(testInfo.project.use.baseURL as string).origin;
+  page.on('request', (request) => { if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== firstPartyOrigin) crossOrigin.push(request.url()); });
   await page.route('https://api.sociobot.in/api/v1/products/practice-loop-notebook/verify?license=fixture-token', (route) => route.fulfill({ json: { valid: true, reason: 'ok' } }));
   await page.goto('/unlock?demo=1');
   await page.getByLabel('License token').fill('fixture-token');
