@@ -1,0 +1,9 @@
+{
+  "slug": "practice-loop-notebook",
+  "title": "Practice Loop Notebook",
+  "artifact_class": "pwa-offline",
+  "user": "Instrumentalists learning a difficult few seconds from a recording who need deliberate looping with a written progression plan, not another streaming player.",
+  "smallest_useful_product": "Offline PWA that stores locally supplied audio/video references, A/B markers, a metronome ramp or variability plan, repetition counts, and a short reflection/export card.",
+  "monetization": "one-time",
+  "constraints": "Only reference or locally import user-controlled media; no platform scraping/download; audio processing stays in-browser; accessibility controls for tempo/click sounds."
+}
