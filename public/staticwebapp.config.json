@@ -1,5 +1,9 @@
 {
   "routes": [
+    { "route": "/demo", "rewrite": "/demo/index.html" },
+    { "route": "/privacy", "rewrite": "/privacy/index.html" },
+    { "route": "/terms", "rewrite": "/terms/index.html" },
+    { "route": "/unlock", "rewrite": "/unlock/index.html" },
     {
       "route": "/assets/*",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
