@@ -1,42 +1,65 @@
 # Practice Loop Notebook
 
-Practice Loop Notebook is a private, offline-first passage looper for instrumentalists learning a difficult few seconds from their own recording. It combines A/B playback, adjustable speed, a metronome ramp or controlled-variability plan, automatic/manual repetition counts, exit criteria, and a durable reflection history.
+Practice Loop Notebook helps instrumentalists repeat a hard part of their own recording.
+
+Set a loop, choose a tempo, count clean passes, and save a note for tomorrow.
 
 Live product: <https://practice-loop-notebook.sociobot.in>
 
-## Product behavior
+Try the isolated sample: <https://practice-loop-notebook.sociobot.in/demo>
 
-- Imports user-controlled audio/video into IndexedDB; nothing is uploaded.
-- Repeats exact A/B markers and keeps marker, speed, and plan changes across reloads.
-- Supports steady, success-based tempo ramp, and deterministic variable-tempo practice.
-- Logs session repetitions, tempo, criterion result, confidence, and reflection.
-- Exports the full notebook as JSON or session evidence as CSV. Media is intentionally omitted from portable exports and can be reattached after import.
-- Installs as a PWA and opens saved passages offline.
-- Includes three saved passages free. A $12 one-time Sociobot license unlocks an unlimited archive; practice tools, export, offline use, and accessibility remain free.
+## What it does
+
+- Stores your selected recording in this browser.
+- Saves loop markers, playback speed, and the practice plan after reload.
+- Offers a steady tempo, a success-based increase, or a set variation pattern.
+- Saves pass count, tempo, result, confidence, and a short note.
+- Exports the notebook as JSON or sessions as CSV.
+- Omits recordings from exports so archive files stay small.
+- Reopens the sample passage offline after the first visit.
+- Stores up to three passages without a license.
+- Keeps practice tools, exports, offline use, and accessibility available without a license.
+
+The app accepts audio or video files that the current browser can play. Keep your original recording for later reattachment.
+
+## Demo isolation
+
+Open `/demo` or `/?demo=1` to load three sample passages. Demo changes use the separate `demo:practice-loop-notebook` IndexedDB database.
+
+The banner can reset the samples or start an empty real notebook. See [the demo contract](.factory/demo.md).
 
 ## Local development
 
-Requires Node.js 20 or newer.
+Use Node.js 20 or newer.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the URL Vite prints. Browsers decide which local media codecs they can play; MP3, WAV, M4A, and MP4 are the most portable choices.
+Open the local URL printed by Vite.
 
 ## Quality checks
 
 ```sh
-npm test          # unit tests
-npm run build     # reproducible static output in dist/
-npm run test:e2e # Chromium desktop + 390 px, Axe, and forced-offline reload
+npm test
+npm run build
+npm run test:claims
+npm run test:e2e
 ```
 
-The exact deployment build command is `npm run build`. Deploy the resulting `dist/` directory as a static site with `index.html` at its root. `/privacy`, `/terms`, and `/unlock` also have static HTML entry points.
+The build command writes the static product to `dist/`. It includes `/demo`, `/privacy`, `/terms`, `/unlock`, and the styled 404 response.
 
-Set `VITE_BILLING_BASE` at build time only when staging against the pilot billing API. Production defaults to `https://api.sociobot.in`; no product ID or payment-provider client code is embedded.
+Deploy `dist/` as the site root. The included Static Web Apps configuration supplies caching, security headers, manifest MIME, and 404 behavior.
 
-## Privacy and project notes
+Production license verification uses `https://api.sociobot.in`. Set `VITE_BILLING_BASE` only for an approved staging gateway.
 
-There are no analytics, trackers, CDN scripts, or remote fonts. The only runtime network contact is an explicit checkout or background verification of an installed license. See [the visual system](.factory/design.md), [the delivery handoff](.factory/handoff.md), and the [MIT license](LICENSE).
+Checkout stays hidden unless the billing product is enabled and `VITE_PURCHASES_ENABLED=true` is set during the build.
+
+## Privacy
+
+Normal use sends no cross-origin requests. License verification contacts only the Sociobot product verification endpoint after a token is added.
+
+The app has no analytics, trackers, CDN scripts, or remote fonts. See [Privacy](https://practice-loop-notebook.sociobot.in/privacy) and [Terms](https://practice-loop-notebook.sociobot.in/terms).
+
+Project records: [visual system](.factory/design.md), [claims](.factory/claims.json), [handoff](.factory/handoff.md), and [MIT license](LICENSE).

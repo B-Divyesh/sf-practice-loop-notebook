@@ -1,5 +1,5 @@
-const CACHE = 'loop-notebook-shell-v2';
-const ASSETS = ['/', '/index.html', '/offline.html', '/manifest.webmanifest', '/assets/loop-desk.webp', '/assets/loop-desk-576.webp', '/icon-192.png', '/icon-512.png'];
+const CACHE = 'loop-notebook-shell-v3';
+const ASSETS = ['/', '/index.html', '/demo/', '/demo/index.html', '/privacy/', '/privacy/index.html', '/terms/', '/terms/index.html', '/unlock/', '/unlock/index.html', '/404.html', '/offline.html', '/offline.css', '/manifest.webmanifest', '/assets/loop-desk.20260828.webp', '/assets/loop-desk-576.20260828.webp', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
@@ -28,9 +28,15 @@ self.addEventListener('fetch', (event) => {
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).then((response) => {
       const copy = response.clone();
-      caches.open(CACHE).then((cache) => cache.put('/index.html', copy));
+      caches.open(CACHE).then((cache) => cache.put(request, copy));
       return response;
-    }).catch(() => caches.match('/index.html').then((response) => response || caches.match('/offline.html'))));
+    }).catch(async () => {
+      const direct = await caches.match(request, { ignoreSearch: true });
+      if (direct) return direct;
+      const pathname = new URL(request.url).pathname;
+      if (pathname === '/demo' || pathname === '/demo/') return (await caches.match('/demo/index.html')) || (await caches.match('/index.html'));
+      return (await caches.match('/index.html')) || (await caches.match('/offline.html'));
+    }));
     return;
   }
   event.respondWith((async () => {

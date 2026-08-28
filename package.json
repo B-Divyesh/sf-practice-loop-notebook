@@ -8,6 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
+    "test:claims": "playwright test tests/e2e/claims.e2e.ts --project=chromium-desktop",
     "test:e2e": "playwright test"
   },
   "devDependencies": {

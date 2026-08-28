@@ -11,6 +11,8 @@ export default defineConfig({
         privacy: resolve(process.cwd(), 'privacy/index.html'),
         terms: resolve(process.cwd(), 'terms/index.html'),
         unlock: resolve(process.cwd(), 'unlock/index.html'),
+        demo: resolve(process.cwd(), 'demo/index.html'),
+        notFound: resolve(process.cwd(), '404.html'),
       },
       output: { manualChunks: undefined },
     },

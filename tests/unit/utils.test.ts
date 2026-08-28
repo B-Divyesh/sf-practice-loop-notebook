@@ -31,7 +31,15 @@ describe('practice utilities', () => {
     const archive = makeArchive([{ ...passage, media: new Blob(['audio']) }]);
     expect(archive.passages[0]).not.toHaveProperty('media');
     expect(parseArchive(JSON.stringify(archive))[0].title).toBe('Bridge run');
-    expect(() => parseArchive('{"version":2}')).toThrow(/not a Practice Loop Notebook/);
+    expect(() => parseArchive('{"version":2}')).toThrow(/choose a Practice Loop Notebook v1 export/);
+  });
+
+  it('rejects incomplete passages and invalid session bounds before import', () => {
+    const incomplete = JSON.stringify({ product: 'practice-loop-notebook', version: 1, passages: [{ id: 'bad', title: 'Bad', sessions: [], updatedAt: '2026-08-28T00:00:00.000Z' }] });
+    expect(() => parseArchive(incomplete)).toThrow(/invalid duration field.*No data was imported/);
+    const invalidSession = makeArchive([passage]);
+    invalidSession.passages[0].sessions[0].confidence = 9 as 5;
+    expect(() => parseArchive(JSON.stringify(invalidSession))).toThrow(/invalid confidence field.*No data was imported/);
   });
 
   it('exports spreadsheet-safe quoted session evidence', () => {

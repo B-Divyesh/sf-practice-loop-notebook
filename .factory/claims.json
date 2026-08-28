@@ -1,0 +1,86 @@
+[
+  {
+    "id": "offline-reload",
+    "claim": "The sample passage reopens offline after the first visit.",
+    "where": "landing facts, README",
+    "test": "npm run test:claims -- --grep @claim:offline-reload",
+    "sandbox": "fresh browser context; open /demo; wait for service worker control; force offline; reload"
+  },
+  {
+    "id": "demo-no-account",
+    "claim": "The sample opens in one click without an account.",
+    "where": "landing primary action and facts",
+    "test": "npm run test:claims -- --grep @claim:demo-no-account",
+    "sandbox": "fresh browser context; click the first-screen demo action; assert seeded practice UI and no account form"
+  },
+  {
+    "id": "local-private",
+    "claim": "Normal practice data stays in this browser with no analytics or third-party resources.",
+    "where": "landing, privacy, footer, README",
+    "test": "npm run test:claims -- --grep @claim:local-private",
+    "sandbox": "fresh demo; record all HTTP requests; save a session; inspect separate real and demo IndexedDB databases"
+  },
+  {
+    "id": "local-media",
+    "claim": "A selected browser-playable recording is stored in the local notebook.",
+    "where": "new-loop form, README",
+    "test": "npm run test:claims -- --grep @claim:local-media",
+    "sandbox": "fresh demo; remove one sample; import bundled WAV bytes; inspect the stored Blob and request log"
+  },
+  {
+    "id": "json-export",
+    "claim": "JSON export includes plans and sessions but omits recording bytes.",
+    "where": "archive help, README",
+    "test": "npm run test:claims -- --grep @claim:json-export",
+    "sandbox": "fresh demo data; download JSON; assert complete plan/session fields and no media field"
+  },
+  {
+    "id": "csv-export",
+    "claim": "CSV export contains one row for every saved session.",
+    "where": "landing facts, archive button, README",
+    "test": "npm run test:claims -- --grep @claim:csv-export",
+    "sandbox": "fresh demo data; download CSV; assert header and row count/content"
+  },
+  {
+    "id": "practice-persistence",
+    "claim": "Loop markers, playback speed, and the practice plan persist after reload.",
+    "where": "README",
+    "test": "npm run test:claims -- --grep @claim:practice-persistence",
+    "sandbox": "fresh demo; change markers, speed, and target; reload; assert each saved value"
+  },
+  {
+    "id": "plan-modes",
+    "claim": "The notebook supports steady, success-based ramp, and set variable-tempo plans.",
+    "where": "README and plan editor",
+    "test": "npm run test:claims -- --grep @claim:plan-modes",
+    "sandbox": "fresh seeded demo containing each plan mode; open each passage and assert its computed tempo and mode"
+  },
+  {
+    "id": "session-evidence",
+    "claim": "A session saves pass count, tempo, result, confidence, and reflection.",
+    "where": "landing workflow, README",
+    "test": "npm run test:claims -- --grep @claim:session-evidence",
+    "sandbox": "fresh demo; count a pass; save a reflection; assert every field in IndexedDB and visible history"
+  },
+  {
+    "id": "free-license-boundary",
+    "claim": "The free notebook stores three passages; a verified license removes only that limit.",
+    "where": "landing limit section, terms, unlock, README",
+    "test": "npm run test:claims -- --grep @claim:free-license-boundary",
+    "sandbox": "fresh isolated demo; assert three-passage boundary; intercept the Sociobot verify endpoint with a valid fixture; assert demo-only unlock"
+  },
+  {
+    "id": "installable-shell",
+    "claim": "The product supplies an installable PWA shell.",
+    "where": "manifest and README deployment notes",
+    "test": "npm run test:claims -- --grep @claim:installable-shell",
+    "sandbox": "fresh demo; inspect manifest fields, icons, and active service worker scope"
+  },
+  {
+    "id": "license-contact",
+    "claim": "License verification contacts only the Sociobot product verification endpoint after a token is added.",
+    "where": "privacy and README",
+    "test": "npm run test:claims -- --grep @claim:license-contact",
+    "sandbox": "fresh demo; intercept recorded verification fixture; assert the only cross-origin request and demo-prefixed token storage"
+  }
+]

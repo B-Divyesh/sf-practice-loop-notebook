@@ -1,12 +1,22 @@
 import type { Passage } from './types';
 
-const DB_NAME = 'practice-loop-notebook';
+export const REAL_DB_NAME = 'practice-loop-notebook';
+export const DEMO_DB_NAME = 'demo:practice-loop-notebook';
 const STORE = 'passages';
 const VERSION = 1;
+let demoMode = false;
+
+export function setDemoStorage(enabled: boolean): void {
+  demoMode = enabled;
+}
+
+export function activeDatabaseName(): string {
+  return demoMode ? DEMO_DB_NAME : REAL_DB_NAME;
+}
 
 function openDb(): Promise<IDBDatabase> {
   return new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, VERSION);
+    const request = indexedDB.open(activeDatabaseName(), VERSION);
     request.onupgradeneeded = () => {
       const db = request.result;
       if (!db.objectStoreNames.contains(STORE)) db.createObjectStore(STORE, { keyPath: 'id' });
@@ -55,4 +65,13 @@ export async function mergePassages(imported: Omit<Passage, 'media'>[]): Promise
     }
   }
   return count;
+}
+
+export async function clearPassages(): Promise<void> {
+  const db = await openDb();
+  return new Promise<void>((resolve, reject) => {
+    const request = db.transaction(STORE, 'readwrite').objectStore(STORE).clear();
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject(request.error);
+  }).finally(() => db.close());
 }

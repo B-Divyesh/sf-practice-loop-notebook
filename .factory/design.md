@@ -56,6 +56,10 @@ Negative list: photorealism, glossy 3D, neon cyberpunk gradient, real people, ha
 
 Generated with the factory `factory-image` deployment on 2026-08-28. The selected output and prompt sidecars live in `assets/src/`; optimized 576 px and 1152 px shipping WebPs live in `public/assets/`. Generated imagery is original to this product under the repository license. Icons and waveform decorations are authored in CSS/SVG and use no third-party asset set.
 
+The 1200 × 630 social preview is a center crop of that same original scene. Versioned WebP filenames let the static host cache the artwork immutably.
+
+Demo mode adds a narrow lilac-edged tracker strip above the work surface. It reads as a temporary channel on the same loop station, not a separate SaaS interface.
+
 ## Why it fits
 
 Trackers teach through small patterns, counters, and repeatable edits—the same mental model as deliberate passage practice. The visual system makes time ranges and evidence feel concrete while staying quieter than a DAW and more purposeful than a streaming player.
