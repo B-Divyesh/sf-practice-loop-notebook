@@ -1,8 +1,8 @@
-# Practice Loop Notebook — polish round 1 handoff
+# Practice Loop Notebook — review 2 handoff
 
 Date: 2026-08-28
 
-Work order: `practice-loop-notebook-polish-1`
+Work order: `practice-loop-notebook-review-2`
 
 Live product: <https://practice-loop-notebook.sociobot.in>
 
@@ -12,56 +12,29 @@ Deployed product commit: `92da9b2205f2a859c3ad17646fbb079e4d1f2aae`
 
 ## Outcome
 
-All findings in `.factory/review-1.md` and the earlier P1–P3 verification findings are resolved.
+Review only; no product code was changed. The review is **FAIL** with two blockers recorded in `.factory/review-2.md`:
 
-The first screen now names instrumentalists and offers a one-click sample. The demo immediately opens a seeded passage with audio, a tempo plan, pass target, and completed reflection.
+1. `Start for real` leaves `demo:sb_license:practice-loop-notebook` in localStorage instead of discarding all demo data.
+2. The designed `/404` route lacks Open Graph and Twitter metadata, reopening the metadata portion of F-1-7.
 
-Demo passages and licenses use separate namespaces. Resetting or leaving the demo never reads or changes the real notebook.
-
-Archive import now validates every passage and session field before any write. Unknown URLs and `/404` return the styled error page with HTTP 404.
-
-Routes update titles, metadata, focus, announcements, scroll state, and browser history. Header and footer links remain available on every route and at 390 px.
+The cold first screen, sample demo, claim registry, normal demo isolation, archive validation, routing, headers, and visual identity otherwise passed this fresh review.
 
 ## Verification evidence
 
 ### Clean clone
 
-A fresh clone at `/tmp/practice-loop-clean-pvZ50s/repo` ran `npm ci`. Every command in `.factory/claims.json` then ran separately.
+A fresh clone at `/tmp/practice-loop-review-2-EOUOKo` ran `npm ci`. `PLAYWRIGHT_BASE_URL=https://practice-loop-notebook.sociobot.in npm run test:claims` passed all 12 registered claim tests. The review checkout also ran each individual command listed by `.factory/claims.json`; all passed.
 
-All 12 claim commands passed with one matching test each.
+### Review verification
 
-### Local gates
-
-- `npm test`: 6/6 unit tests passed.
-- `npm run test:claims`: 12/12 claim tests passed.
-- `npm run test:e2e`: 36/36 tests passed across desktop Chromium and a 390 × 844 touch viewport.
-- Axe ran on root, demo, privacy, terms, archive-limit, and 404 views in both projects. It found zero serious or critical violations.
-- `npm run build`: produced `dist/` with 43.62 KB JavaScript and 19.86 KB CSS before gzip.
-- Initial JavaScript is 14.47 KB gzip. CSS is 5.01 KB gzip. The largest first-screen image is 31.25 KB.
-- `npm audit --audit-level=high`: zero vulnerabilities.
-- Static Web Apps emulator: 200 for `/demo`, `/privacy`, `/terms`, and `/unlock`; 404 for `/404` and unknown routes.
-- Local factory URL verifier: no console or page errors; one h1; `lang`, main, image alt, and button-name checks passed.
-- Lighthouse 12.5.1 mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100.
-- Lighthouse metrics: FCP 1.1 s, LCP 1.8 s, TBT 0 ms, CLS 0, Speed Index 1.1 s.
-
-Lighthouse JSON: `.factory/evidence/local/lighthouse.json`.
-
-Local screenshots: `.factory/evidence/local/home-mobile.png`, `.factory/evidence/local/demo-mobile.png`, and desktop equivalents beside them.
-
-### Final live checks
-
-- Factory verifier on `/`: HTTP 200, correct title, `lang="en"`, one h1, main present, no missing alt text, no unnamed buttons, and no errors.
-- Factory verifier on `/demo`: HTTP 200 with title `Demo — Practice Loop Notebook` and the same clean result.
-- `PLAYWRIGHT_BASE_URL=https://practice-loop-notebook.sociobot.in npm run test:claims`: 12/12 passed after the final deployment.
-- Cold 390 px check: correct job headline and audience sentence, visible sample action, and no horizontal overflow.
-- In-app archive-limit navigation and Back both focused the new h1 and set the correct title.
-- `/404` and `/not-a-route`: HTTP 404 with `Page not found` and a notebook return link.
-- `/manifest.webmanifest`: `application/manifest+json` with a one-hour revalidation policy.
-- Versioned JS and WebP assets: `public, max-age=31536000, immutable`.
-- Root response: CSP, Permissions-Policy, Referrer-Policy, X-Content-Type-Options, and X-Frame-Options present.
-- Live JS, CSS, and hero WebP SHA-256 values match the final local `dist/` files exactly.
-
-Live screenshots and verifier JSON: `.factory/evidence/live/root/`, `.factory/evidence/live/demo/`, and `.factory/evidence/live/404-mobile.png`.
+- Clean-clone `npm test`: 6/6 passed.
+- Clean-clone `npm run build`: passed and produced `dist/` (43.62 KB JavaScript; 19.86 KB CSS before gzip).
+- Fresh mobile (390 × 844) and desktop cold visits: clear first-screen job/audience/action, no horizontal overflow, no console errors.
+- Live claim tests: all 12 passed.
+- Live route/back/focus test: passed.
+- Live headers: CSP, Permissions-Policy, proper manifest MIME, and immutable hashed asset caching observed.
+- Live `/404`: HTTP 404 and usable recovery UI, but missing OG/Twitter tags.
+- Direct sandbox test: real storage remains separate, but demo license token survives `Start for real`.
 
 ## Run and deploy
 
@@ -74,14 +47,6 @@ npm run build
 /opt/fleet/lib/deploy-static.sh practice-loop-notebook dist
 ```
 
-## Billing note
-
-The production billing API reports that this factory product is not enabled. The unverified `$12` claim and dead checkout action were removed.
-
-The three-passage boundary and license verification contract remain fully tested with a recorded response. Existing licenses can be restored.
-
-New purchase controls appear only when the factory enables the product and builds with `VITE_PURCHASES_ENABLED=true`. This avoids publishing a price or checkout claim that cannot currently be fulfilled.
-
 ## Known gaps
 
-None against the cumulative review or product acceptance criteria. Billing enablement is an external factory operation and is represented honestly in the interface.
+Resolve F-2-1 and F-2-2 before acceptance. No deployment action was taken by this reviewer.
