@@ -1,0 +1,12 @@
+200 /
+200 /demo
+200 /privacy
+200 /terms
+200 /unlock
+200 /manifest.webmanifest
+200 /robots.txt
+200 /sitemap.xml
+200 /favicon.ico
+200 /apple-touch-icon.png
+200 /assets/main-D9b86aQi.js
+404 /not-a-route
