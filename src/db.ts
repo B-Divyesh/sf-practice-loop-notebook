@@ -75,3 +75,14 @@ export async function clearPassages(): Promise<void> {
     request.onerror = () => reject(request.error);
   }).finally(() => db.close());
 }
+
+/** Remove the active notebook namespace entirely when a visitor leaves demo mode. */
+export function discardActiveDatabase(): Promise<void> {
+  const name = activeDatabaseName();
+  return new Promise<void>((resolve, reject) => {
+    const request = indexedDB.deleteDatabase(name);
+    request.onsuccess = () => resolve();
+    request.onblocked = () => reject(new Error('Close other demo tabs, then try starting for real again.'));
+    request.onerror = () => reject(request.error ?? new Error('Could not discard the demo notebook.'));
+  });
+}

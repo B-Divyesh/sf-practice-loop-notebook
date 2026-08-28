@@ -23,6 +23,6 @@ Demo passages use IndexedDB database `demo:practice-loop-notebook`. Real passage
 
 Demo license state uses the `demo:sb_license:practice-loop-notebook` localStorage key. It never reads or writes the real license key.
 
-`Reset demo` clears only the demo database and restores the three original passages. `Start for real` clears the demo database and opens the real notebook.
+`Reset demo` clears only the demo database and restores the three original passages. `Start for real` clears the demo database and demo license key, then opens the real notebook. It never changes real notebook or license storage.
 
 The persistent banner identifies demo mode on notebook, legal, and archive-limit routes.

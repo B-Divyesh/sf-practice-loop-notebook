@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 
 function wavBuffer(seconds = 2): Buffer {
   const sampleRate = 8000;
@@ -78,6 +79,44 @@ test('updates route titles, heading focus, history, and unknown-route recovery',
   await expect(page).toHaveTitle('Page not found — Practice Loop Notebook');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
   await expect(page.getByRole('link', { name: 'Return to the notebook' })).toBeVisible();
+});
+
+test('discards every demo namespace when starting for real', async ({ page }) => {
+  await page.goto('/demo');
+  await page.evaluate(() => {
+    localStorage.setItem('demo:sb_license:practice-loop-notebook', 'fixture-demo-token');
+    localStorage.setItem('sb_license:practice-loop-notebook', 'real-license-must-remain');
+  });
+  await page.getByRole('button', { name: 'Start for real' }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect.poll(() => page.evaluate(async () => {
+    const databases = await indexedDB.databases();
+    const hasDemoStore = databases.some((database) => database.name === 'demo:practice-loop-notebook');
+    return {
+      hasDemoStore,
+      demoLicense: localStorage.getItem('demo:sb_license:practice-loop-notebook'),
+      realLicense: localStorage.getItem('sb_license:practice-loop-notebook'),
+    };
+  })).toEqual({ hasDemoStore: false, demoLicense: null, realLicense: 'real-license-must-remain' });
+});
+
+test('serves complete social metadata for the designed 404 and unknown paths', async ({ page, request }) => {
+  const notFoundSource = await readFile('404.html', 'utf8');
+  expect(notFoundSource).toContain('property="og:title" content="Page not found — Practice Loop Notebook"');
+  expect(notFoundSource).toContain('property="og:description"');
+  expect(notFoundSource).toContain('property="og:image" content="https://practice-loop-notebook.sociobot.in/assets/social-preview.20260828.webp"');
+  expect(notFoundSource).toContain('name="twitter:card" content="summary_large_image"');
+  expect(notFoundSource).toContain('name="twitter:title" content="Page not found — Practice Loop Notebook"');
+  expect(notFoundSource).toContain('name="twitter:description"');
+  expect(notFoundSource).toContain('name="twitter:image" content="https://practice-loop-notebook.sociobot.in/assets/social-preview.20260828.webp"');
+  for (const path of ['/404', '/not-a-route']) {
+    const response = await request.get(path);
+    // Vite's local preview deliberately answers SPA fallbacks with 200; Static
+    // Web Apps returns the configured 404 response in deployed verification.
+    expect(response.status()).toBe(process.env.PLAYWRIGHT_BASE_URL ? 404 : 200);
+    await page.goto(path);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
+  }
 });
 
 test('keeps the full first action and controls usable at 390 px', async ({ page }) => {

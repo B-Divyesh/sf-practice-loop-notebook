@@ -1,5 +1,5 @@
 import './styles.css';
-import { clearPassages, deletePassage, getPassages, mergePassages, putPassage, setDemoStorage } from './db';
+import { clearPassages, deletePassage, discardActiveDatabase, getPassages, mergePassages, putPassage, setDemoStorage } from './db';
 import { BILLING_BASE, captureReturnedLicense, CHECKOUT_URL, clearLicense, hasOptimisticUnlock, saveLicense, setLicenseDemoMode, verifyLicense } from './license';
 import type { Passage, PracticeSession } from './types';
 import { clampLoop, formatTime, makeArchive, nextRampBpm, parseArchive, passagesToCsv, variedBpm } from './utils';
@@ -374,7 +374,13 @@ async function resetDemo(): Promise<void> {
 }
 
 async function startForReal(): Promise<void> {
-  if (demoMode) await clearPassages();
+  if (demoMode) {
+    await discardActiveDatabase();
+    // Demo licenses are sandbox state too. Clear this while the demo namespace
+    // is active so leaving the sample cannot retain any entitlement.
+    clearLicense();
+    unlocked = false;
+  }
   location.assign('/');
 }
 
